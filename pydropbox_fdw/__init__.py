@@ -15,6 +15,8 @@ class PydropboxFDW(ForeignDataWrapper):
         if 'token' not in options:
             log_to_postgres('access token is not specified', ERROR)
 
+        self._path = options.get('path', '/')
+
         try:
             self._client = DropboxClient(options['token'])
         except Exception as e:
@@ -24,13 +26,12 @@ class PydropboxFDW(ForeignDataWrapper):
         log_to_postgres('exec quals: %s' % quals, DEBUG)
         log_to_postgres('exec columns: %s' % columns, DEBUG)
 
-        path = '/'
         resp = {}
         try:
-            resp = self._client.metadata(path)
+            resp = self._client.metadata(self._path)
         except Exception as e:
             log_to_postgres(
-                'could not get metadata for path "%s": %s' % (path, str(e)),
+                'could not get metadata for path "%s": %s' % (self._path, str(e)),
                 ERROR)
 
         for item in resp.get('contents', []):
