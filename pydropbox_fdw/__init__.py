@@ -17,6 +17,14 @@ class PydropboxFDW(ForeignDataWrapper):
 
         self._path = options.get('path', '/')
 
+        self._metadata_params = {}
+
+        if 'file_limit' in options:
+            self._metadata_params['file_limit'] = int(options['file_limit'])
+
+        if 'include_deleted' in options:
+            self._metadata_params['include_deleted'] = bool(options['include_deleted'])
+
         try:
             self._client = DropboxClient(options['token'])
         except Exception as e:
@@ -28,7 +36,7 @@ class PydropboxFDW(ForeignDataWrapper):
 
         resp = {}
         try:
-            resp = self._client.metadata(self._path)
+            resp = self._client.metadata(self._path, **self._metadata_params)
         except Exception as e:
             log_to_postgres(
                 'could not get metadata for path "%s": %s' % (self._path, str(e)),
