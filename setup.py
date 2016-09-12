@@ -7,7 +7,7 @@ def read(fname):
 
 setup(
     name='pydropbox_fdw',
-    version='0.0.1',
+    version='0.0.2',
     description=('dropbox fdw for postgresql'),
     long_description=read('README.rst'),
     author='Dmitriy Olshevskiy',

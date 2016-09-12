@@ -51,9 +51,13 @@ installation
             is_dir BOOLEAN,
             mime_type TEXT,
             revision INT,
-            root TEXT
+            root TEXT,
+            is_deleted BOOLEAN
         ) SERVER pydropbox_fdw OPTIONS (
-            token 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+            token 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            path '/',  -- optional
+            include_deleted 'y',  -- optional
+            file_limit '10'  -- optional
         );
 
 *****
